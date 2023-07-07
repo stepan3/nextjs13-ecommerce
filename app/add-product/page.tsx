@@ -1,31 +1,32 @@
 import FormSubmitButton from "@/components/FormSubmitButton";
 import { prisma } from "@/lib/db/prisma";
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Add Product - Famazon"
-}
+  title: "Add Product - Flowmazon",
+};
 
 async function addProduct(formData: FormData) {
   "use server";
 
-  const name = formData.get("name")?.toString()
-  const description = formData.get("description")?.toString()
-  const imageUrl = formData.get("imageUrl")?.toString()
-  const price = Number(formData.get("price") || 0)
+  const name = formData.get("name")?.toString();
+  const description = formData.get("description")?.toString();
+  const imageUrl = formData.get("imageUrl")?.toString();
+  const price = Number(formData.get("price") || 0);
 
   if (!name || !description || !imageUrl || !price) {
-    throw Error("Missing required fields")
+    throw Error("Missing required fields");
   }
 
   await prisma.product.create({
-    data: { name, description, imageUrl, price }
-  })
+    data: { name, description, imageUrl, price },
+  });
 
-  redirect("/")
+  redirect("/");
 }
 
-export default function AddProductPage() {
+export default async function AddProductPage() {
+
   return (
     <div>
       <h1 className="mb-3 text-lg font-bold">Add Product</h1>
@@ -37,9 +38,10 @@ export default function AddProductPage() {
           className="input-bordered input mb-3 w-full"
         />
         <textarea
-          required name="name"
+          required
+          name="description"
           placeholder="Description"
-          className="textarea textarea-bordered mb-3 w-full"
+          className="textarea-bordered textarea mb-3 w-full"
         />
         <input
           required
@@ -60,6 +62,3 @@ export default function AddProductPage() {
     </div>
   );
 }
-
-
-
